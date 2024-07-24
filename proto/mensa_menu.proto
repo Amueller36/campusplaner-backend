@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package mensa_menu;
+
+// Define the enum for location
+enum Location {
+    MENSA_SUEDSTADT = 0;
+    MENSA_CLAUDIUSSTRASSE = 1;
+    BISTRO_DEUTZ = 2;
+    MENSA_ZUELPICHER_STRASSE = 3;
+    MENSA_DEUTZ = 4;
+    MENSA_GUMMERSBACH = 5;
+}
+
+// Define a message for a single menu item
+message MenuItem {
+    string category = 1;
+    string meal = 2;
+    string description = 3;
+    string foodicons = 4;
+    float price_students = 5;
+    float price_employees = 6;
+    float price_internal_guests = 7;
+    float price_external_guests = 8;
+    string weight_unit = 9;
+    string foto = 10;
+    string uhrzeit = 11;
+}
+
+// Define a message for a date which contains multiple menu items
+message DatesMenu {
+    int64 timestamp = 1;
+    repeated MenuItem menu_items = 2;
+}
+
+message WeekMenu {
+    Location location = 1;
+    repeated DatesMenu dates_menu = 2;
+}
+
+service MenuService {
+    rpc GetMenu (MenuRequest) returns (MenuResponse);
+}
+
+message MenuRequest {
+    Location location = 1;
+    int64 date = 2; // Use timestamp for date
+}
+
+message MenuResponse {
+    WeekMenu menu = 1;
+}
